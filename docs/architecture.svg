@@ -151,8 +151,8 @@
     <g stroke="#f87171" stroke-width="1.6">
       <line x1="380" y1="636" x2="800" y2="636" marker-end="url(#arr)" stroke-dasharray="5 4"/>
     </g>
-    <text x="990" y="619" fill="#9aa3c0" font-size="12">grade fails → "couldn't</text>
-    <text x="990" y="637" fill="#9aa3c0" font-size="12">find…" (never invented)</text>
+    <text x="990" y="619" fill="#9aa3c0" font-size="12">grade fails → LLM rewrites</text>
+    <text x="990" y="637" fill="#9aa3c0" font-size="12">query → 1 retry, then give up</text>
   </g>
 
   <!-- SAMPLE Q&A STRIP -->

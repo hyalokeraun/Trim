@@ -107,13 +107,13 @@ def check_ollama() -> bool:
 
 # ---------------- Gemini (free tier, REST) ----------------
 
-def _generate_gemini(prompt: str) -> str:
+def _generate_gemini(prompt: str, system: str | None = None) -> str:
     if not GEMINI_API_KEY:
         raise LLMError(GEMINI_KEY_HINT)
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
            f"{GEMINI_MODEL}:generateContent")
     body = {
-        "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
+        "system_instruction": {"parts": [{"text": system or SYSTEM_PROMPT}]},
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"temperature": 0.2, "maxOutputTokens": 512},
     }
@@ -153,7 +153,7 @@ def check_gemini() -> bool:
 
 # ---------------- Groq (free tier, OpenAI-compatible) ----------------
 
-def _generate_groq(prompt: str) -> str:
+def _generate_groq(prompt: str, system: str | None = None) -> str:
     if not GROQ_API_KEY:
         raise LLMError(GROQ_KEY_HINT)
     try:
@@ -163,7 +163,7 @@ def _generate_groq(prompt: str) -> str:
             json={
                 "model": GROQ_MODEL,
                 "messages": [
-                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "system", "content": system or SYSTEM_PROMPT},
                     {"role": "user", "content": prompt},
                 ],
                 "temperature": 0.2,
@@ -197,6 +197,31 @@ def check_groq() -> bool:
 
 
 # ---------------- dispatch ----------------
+
+REWRITE_SYSTEM = (
+    "You rewrite user questions into keyword queries for searching company policy "
+    "documents. Prefer formal policy vocabulary (e.g. 'unwell' -> 'sick leave', "
+    "'cash out' -> 'encashment', 'time off' -> 'leave')."
+)
+
+
+def rewrite_query(question: str, history=None) -> str:
+    """Turn a (possibly colloquial/failed) question into search keywords."""
+    provider = (LLM_PROVIDER or "ollama").lower()
+    hist = _history_block(history)
+    prompt = (
+        "Rewrite the question below as 8-12 keywords likely to appear verbatim in "
+        "company policy documents. Return ONLY the keywords, comma-separated, no quotes.\n"
+        + (f"Recent conversation:\n{hist}\n" if hist else "")
+        + f"Question: {question}\nKeywords:"
+    )
+    if provider == "gemini":
+        return _generate_gemini(prompt, system=REWRITE_SYSTEM)
+    if provider == "groq":
+        return _generate_groq(prompt, system=REWRITE_SYSTEM)
+    if provider == "ollama":
+        return _generate_ollama(prompt)
+    raise LLMError(f"Unknown LLM_PROVIDER='{LLM_PROVIDER}'. Use ollama, gemini, or groq.")
 
 def generate_answer(question: str, chunks, history=None) -> str:
     provider = (LLM_PROVIDER or "ollama").lower()

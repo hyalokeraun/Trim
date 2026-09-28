@@ -136,27 +136,31 @@ class VectorStore:
                 })
             return results
 
-    def search_filtered(self, query: str, top_k: int = TOP_K,
-                        threshold: float = RELEVANCE_THRESHOLD) -> Tuple[List[Dict[str, Any]], float]:
-        """Apply absolute threshold + low-confidence margin rule.
+    @staticmethod
+    def apply_filter(hits: List[Dict[str, Any]], threshold: float) -> List[Dict[str, Any]]:
+        """Shared relevance rule: absolute threshold + low-confidence margin check.
 
-        Margin rule: a weak top hit that barely beats the runner-up is likely a
-        generic-term coincidence (e.g. the word 'policy' matching every doc), so
-        treat it as not-found unless the top score is decisive (>= 0.15) or
-        clearly ahead (>= 1.6x the second-best score).
-        Returns (passing_chunks, max_score).
+        A weak top hit that barely beats the runner-up is likely a generic-term
+        coincidence, so it only counts when decisive (>= 0.15) or clearly ahead
+        (>= 1.6x the second-best score).
         """
-        hits = self.search(query, top_k=top_k)
         if not hits:
-            return [], 0.0
+            return []
         best = hits[0]["score"]
         second = hits[1]["score"] if len(hits) > 1 else 0.0
         if best < threshold:
-            return [], best
+            return []
         if best < 0.15 and best < 1.6 * max(second, 1e-9):
-            return [], best
-        passing = [h for h in hits if h["score"] >= threshold]
-        return passing, best
+            return []
+        return [h for h in hits if h["score"] >= threshold]
+
+    def search_filtered(self, query: str, top_k: int = TOP_K,
+                        threshold: float = RELEVANCE_THRESHOLD) -> Tuple[List[Dict[str, Any]], float]:
+        """Apply the shared relevance rule. Returns (passing_chunks, max_score)."""
+        hits = self.search(query, top_k=top_k)
+        if not hits:
+            return [], 0.0
+        return self.apply_filter(hits, threshold), hits[0]["score"]
 
     # ---------- stats ----------
     def stats(self) -> Dict[str, Any]:

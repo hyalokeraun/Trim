@@ -18,6 +18,8 @@ except Exception:
 class AgentState(TypedDict, total=False):
     question: str
     history: List[Dict[str, str]]
+    search_query: str
+    retries: int
     hits: List[Dict[str, Any]]
     graded: List[Dict[str, Any]]
     answer: str
@@ -26,13 +28,14 @@ class AgentState(TypedDict, total=False):
 
 
 def retrieve_node(state: AgentState) -> AgentState:
-    hits = store.search(state["question"], top_k=TOP_K)
+    hits = store.search(state.get("search_query") or state["question"], top_k=TOP_K)
     return {"hits": hits}
 
 
 def grade_node(state: AgentState) -> AgentState:
-    """Grade relevance: keep chunks above threshold (LLM-as-judge could plug in here)."""
-    graded = [h for h in state.get("hits", []) if h["score"] >= RELEVANCE_THRESHOLD]
+    """Grade relevance with the SAME rule as the plain pipeline (threshold + margin)."""
+    from app.services.vectorstore import VectorStore
+    graded = VectorStore.apply_filter(state.get("hits", []), RELEVANCE_THRESHOLD)
     return {"graded": graded}
 
 
@@ -52,7 +55,19 @@ def generate_node(state: AgentState) -> AgentState:
 
 
 def _route(state: AgentState) -> str:
-    return "generate" if state.get("graded") else "no_answer"
+    """The agentic bit: grade outcome decides the next step dynamically."""
+    if state.get("graded"):
+        return "generate"
+    if state.get("retries", 0) >= 1:
+        return "no_answer"  # one rewrite already tried — stop, don't loop forever
+    return "rewrite"
+
+
+def rewrite_node(state: AgentState) -> AgentState:
+    """First retrieval failed: let the LLM rephrase into policy vocabulary and retry."""
+    from app.services.llm import rewrite_query
+    keywords = rewrite_query(state["question"], state.get("history"))
+    return {"search_query": keywords, "retries": state.get("retries", 0) + 1}
 
 
 def _no_answer(state: AgentState) -> AgentState:
@@ -64,11 +79,13 @@ if _HAS_LG:
     _g = StateGraph(AgentState)
     _g.add_node("retrieve", retrieve_node)
     _g.add_node("grade", grade_node)
+    _g.add_node("rewrite", rewrite_node)
     _g.add_node("generate", generate_node)
     _g.add_node("no_answer", _no_answer)
     _g.set_entry_point("retrieve")
     _g.add_edge("retrieve", "grade")
-    _g.add_conditional_edges("grade", _route, {"generate": "generate", "no_answer": "no_answer"})
+    _g.add_conditional_edges("grade", _route, {"generate": "generate", "rewrite": "rewrite", "no_answer": "no_answer"})
+    _g.add_edge("rewrite", "retrieve")
     _g.add_edge("generate", END)
     _g.add_edge("no_answer", END)
     _graph = _g.compile()
@@ -78,7 +95,7 @@ def run_agent(question: str, history=None) -> Dict[str, Any]:
     """Execute retrieve->grade->generate->cite. Returns {answer, sources, result_type, confidence}."""
     history = list(history or [])
     if _graph is not None:
-        out = _graph.invoke({"question": question, "history": history})
+        out = _graph.invoke({"question": question, "history": history, "retries": 0})
         graded = out.get("graded", [])
         conf = round(max((h["score"] for h in graded), default=0.0), 3)
         return {
