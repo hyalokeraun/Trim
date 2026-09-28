@@ -1,0 +1,165 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="780" viewBox="0 0 1240 780" font-family="Segoe UI, system-ui, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#8ea2ff"/>
+    </marker>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#151d3d"/>
+      <stop offset="1" stop-color="#10162e"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1240" height="780" rx="16" fill="#0b1020"/>
+  <text x="620" y="42" text-anchor="middle" fill="#e8ecf8" font-size="24" font-weight="600">Enterprise Knowledge Assistant — Architecture</text>
+  <text x="620" y="66" text-anchor="middle" fill="#9aa3c0" font-size="13">RAG Document Q&amp;A · grounded answers with citations · "I don't know" fallback</text>
+
+  <!-- FRONTEND -->
+  <g>
+    <rect x="20" y="90" width="270" height="440" rx="12" fill="url(#card)" stroke="#3b4a8f"/>
+    <text x="155" y="118" text-anchor="middle" fill="#8ea2ff" font-size="15" font-weight="600">React Frontend :5173</text>
+    <rect x="36" y="132" width="238" height="86" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="48" y="156" fill="#e8ecf8" font-size="13" font-weight="600">Chat Window</text>
+    <text x="48" y="176" fill="#9aa3c0" font-size="12">message list · input bar</text>
+    <text x="48" y="194" fill="#9aa3c0" font-size="12">starter questions · typing state</text>
+    <rect x="36" y="230" width="238" height="86" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="48" y="254" fill="#e8ecf8" font-size="13" font-weight="600">Document Upload Panel</text>
+    <text x="48" y="274" fill="#9aa3c0" font-size="12">drag-and-drop PDF / TXT / MD</text>
+    <text x="48" y="292" fill="#9aa3c0" font-size="12">sidebar: list + delete docs</text>
+    <rect x="36" y="328" width="238" height="86" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="48" y="352" fill="#e8ecf8" font-size="13" font-weight="600">View Source Snippet</text>
+    <text x="48" y="372" fill="#9aa3c0" font-size="12">expandable: doc + § section</text>
+    <text x="48" y="390" fill="#9aa3c0" font-size="12">raw excerpt + relevance score</text>
+    <rect x="36" y="426" width="238" height="86" rx="8" fill="#17203f" stroke="#6c8cff" stroke-dasharray="5 4"/>
+    <text x="48" y="450" fill="#e8ecf8" font-size="13" font-weight="600">LangGraph toggle</text>
+    <text x="48" y="470" fill="#9aa3c0" font-size="12">off → /api/ask (pipeline)</text>
+    <text x="48" y="488" fill="#9aa3c0" font-size="12">on → /api/ask-agent (graph)</text>
+  </g>
+
+  <!-- BACKEND -->
+  <g>
+    <rect x="330" y="90" width="300" height="440" rx="12" fill="url(#card)" stroke="#3b4a8f"/>
+    <text x="480" y="118" text-anchor="middle" fill="#8ea2ff" font-size="15" font-weight="600">FastAPI Backend :8000</text>
+    <rect x="346" y="132" width="268" height="64" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="358" y="156" fill="#e8ecf8" font-size="13" font-weight="600">POST /api/ask</text>
+    <text x="358" y="176" fill="#9aa3c0" font-size="12">grounded Q&amp;A + edge cases</text>
+    <rect x="346" y="204" width="268" height="64" rx="8" fill="#14204a" stroke="#6c8cff"/>
+    <text x="358" y="228" fill="#e8ecf8" font-size="13" font-weight="600">POST /api/ask-agent ★</text>
+    <text x="358" y="248" fill="#9aa3c0" font-size="12">LangGraph retrieve→grade→cite</text>
+    <rect x="346" y="276" width="268" height="64" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="358" y="300" fill="#e8ecf8" font-size="13" font-weight="600">POST /api/upload</text>
+    <text x="358" y="320" fill="#9aa3c0" font-size="12">parse → section-chunk → index</text>
+    <rect x="346" y="348" width="268" height="64" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="358" y="372" fill="#e8ecf8" font-size="13" font-weight="600">GET / DELETE documents</text>
+    <text x="358" y="392" fill="#9aa3c0" font-size="12">list · delete · POST /reindex</text>
+    <rect x="346" y="420" width="268" height="64" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="358" y="444" fill="#e8ecf8" font-size="13" font-weight="600">GET /api/health</text>
+    <text x="358" y="464" fill="#9aa3c0" font-size="12">provider · docs · chunks</text>
+    <text x="480" y="508" text-anchor="middle" fill="#9aa3c0" font-size="12">CORS → Vite proxy /api → :8000</text>
+  </g>
+
+  <!-- RAG CORE -->
+  <g>
+    <rect x="670" y="90" width="300" height="440" rx="12" fill="url(#card)" stroke="#3b4a8f"/>
+    <text x="820" y="118" text-anchor="middle" fill="#8ea2ff" font-size="15" font-weight="600">RAG Core (Python)</text>
+    <rect x="686" y="132" width="268" height="86" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="698" y="156" fill="#e8ecf8" font-size="13" font-weight="600">Ingestion</text>
+    <text x="698" y="176" fill="#9aa3c0" font-size="12">pypdf / txt / md → text</text>
+    <text x="698" y="194" fill="#9aa3c0" font-size="12">section-aware chunks + § labels</text>
+    <rect x="686" y="230" width="268" height="86" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="698" y="254" fill="#e8ecf8" font-size="13" font-weight="600">TF-IDF Vector Store</text>
+    <text x="698" y="274" fill="#9aa3c0" font-size="12">scikit-learn · cosine similarity</text>
+    <text x="698" y="292" fill="#9aa3c0" font-size="12">42 chunks · JSON persisted</text>
+    <rect x="686" y="328" width="268" height="86" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="698" y="352" fill="#e8ecf8" font-size="13" font-weight="600">Retrieval + Filter</text>
+    <text x="698" y="372" fill="#9aa3c0" font-size="12">top-5 · threshold 0.08</text>
+    <text x="698" y="390" fill="#9aa3c0" font-size="12">margin rule kills weak hits</text>
+    <rect x="686" y="426" width="268" height="86" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="698" y="450" fill="#e8ecf8" font-size="13" font-weight="600">Edge Cases</text>
+    <text x="698" y="470" fill="#9aa3c0" font-size="12">empty → 400 · "leave?" → clarify</text>
+    <text x="698" y="488" fill="#9aa3c0" font-size="12">no hit → "couldn't find…"</text>
+  </g>
+
+  <!-- EXTERNAL -->
+  <g>
+    <rect x="1010" y="90" width="210" height="440" rx="12" fill="url(#card)" stroke="#3b4a8f"/>
+    <text x="1115" y="118" text-anchor="middle" fill="#8ea2ff" font-size="15" font-weight="600">External</text>
+    <rect x="1022" y="132" width="186" height="86" rx="8" fill="#0e1430" stroke="#34d399"/>
+    <text x="1034" y="156" fill="#e8ecf8" font-size="13" font-weight="600">Groq Cloud LLM</text>
+    <text x="1034" y="176" fill="#9aa3c0" font-size="12">gpt-oss-20b · free tier</text>
+    <text x="1034" y="194" fill="#9aa3c0" font-size="12">temp 0.2 · cited answers</text>
+    <rect x="1022" y="230" width="186" height="86" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="1034" y="254" fill="#e8ecf8" font-size="13" font-weight="600">Sample Docs ×7</text>
+    <text x="1034" y="274" fill="#9aa3c0" font-size="12">synthetic HR / IT /</text>
+    <text x="1034" y="292" fill="#9aa3c0" font-size="12">travel / remote… (.txt)</text>
+    <rect x="1022" y="328" width="186" height="86" rx="8" fill="#14204a" stroke="#6c8cff"/>
+    <text x="1034" y="352" fill="#e8ecf8" font-size="13" font-weight="600">MCP Tool ★</text>
+    <text x="1034" y="372" fill="#9aa3c0" font-size="12">search_knowledge_</text>
+    <text x="1034" y="390" fill="#9aa3c0" font-size="12">base() via FastMCP</text>
+    <rect x="1022" y="426" width="186" height="86" rx="8" fill="#0e1430" stroke="#2c3a75"/>
+    <text x="1034" y="450" fill="#e8ecf8" font-size="13" font-weight="600">Ollama (alt)</text>
+    <text x="1034" y="470" fill="#9aa3c0" font-size="12">local path · llama3.1</text>
+    <text x="1034" y="488" fill="#9aa3c0" font-size="12">LLM_PROVIDER switch</text>
+  </g>
+
+  <!-- FLOWS between columns -->
+  <g stroke="#8ea2ff" stroke-width="1.6" fill="none">
+    <line x1="290" y1="180" x2="326" y2="180" marker-end="url(#arr)"/>
+    <line x1="290" y1="270" x2="326" y2="290" marker-end="url(#arr)"/>
+    <line x1="634" y1="180" x2="666" y2="200" marker-end="url(#arr)"/>
+    <line x1="634" y1="300" x2="666" y2="360" marker-end="url(#arr)"/>
+    <line x1="974" y1="180" x2="1006" y2="170" marker-end="url(#arr)"/>
+    <line x1="1006" y1="200" x2="974" y2="230" marker-end="url(#arr)"/>
+  </g>
+  <g fill="#9aa3c0" font-size="11">
+    <text x="292" y="168">question</text>
+    <text x="292" y="258">upload</text>
+    <text x="636" y="188">index</text>
+    <text x="636" y="348">search</text>
+    <text x="936" y="158">prompt</text>
+    <text x="936" y="224">answer</text>
+  </g>
+  <g stroke="#8ea2ff" stroke-width="1.6" fill="none">
+    <line x1="480" y1="534" x2="480" y2="180" opacity="0"/>
+  </g>
+  <!-- answer return arc -->
+  <g stroke="#34d399" stroke-width="1.6" fill="none">
+    <line x1="326" y1="420" x2="290" y2="400" marker-end="url(#arr)"/>
+  </g>
+  <text x="292" y="438" fill="#9aa3c0" font-size="11">answer+sources</text>
+
+  <!-- LANGGRAPH STRIP -->
+  <g>
+    <rect x="20" y="550" width="1200" height="110" rx="12" fill="url(#card)" stroke="#6c8cff"/>
+    <text x="40" y="578" fill="#8ea2ff" font-size="14" font-weight="600">★ Bonus — LangGraph agent flow (/api/ask-agent)</text>
+    <g font-size="13">
+      <rect x="40" y="592" width="150" height="44" rx="8" fill="#0e1430" stroke="#6c8cff"/>
+      <text x="115" y="619" text-anchor="middle" fill="#e8ecf8">Retrieve (top-5)</text>
+      <rect x="230" y="592" width="150" height="44" rx="8" fill="#0e1430" stroke="#6c8cff"/>
+      <text x="305" y="619" text-anchor="middle" fill="#e8ecf8">Grade relevance</text>
+      <rect x="420" y="592" width="150" height="44" rx="8" fill="#0e1430" stroke="#6c8cff"/>
+      <text x="495" y="619" text-anchor="middle" fill="#e8ecf8">Generate (Groq)</text>
+      <rect x="610" y="592" width="150" height="44" rx="8" fill="#0e1430" stroke="#6c8cff"/>
+      <text x="685" y="619" text-anchor="middle" fill="#e8ecf8">Cite &amp; format</text>
+      <rect x="800" y="592" width="150" height="44" rx="8" fill="#1a1030" stroke="#f87171"/>
+      <text x="875" y="619" text-anchor="middle" fill="#e8ecf8">No-answer path</text>
+    </g>
+    <g stroke="#8ea2ff" stroke-width="1.6">
+      <line x1="190" y1="614" x2="228" y2="614" marker-end="url(#arr)"/>
+      <line x1="380" y1="614" x2="418" y2="614" marker-end="url(#arr)"/>
+      <line x1="570" y1="614" x2="608" y2="614" marker-end="url(#arr)"/>
+    </g>
+    <g stroke="#f87171" stroke-width="1.6">
+      <line x1="380" y1="636" x2="800" y2="636" marker-end="url(#arr)" stroke-dasharray="5 4"/>
+    </g>
+    <text x="990" y="619" fill="#9aa3c0" font-size="12">grade fails → "couldn't</text>
+    <text x="990" y="637" fill="#9aa3c0" font-size="12">find…" (never invented)</text>
+  </g>
+
+  <!-- SAMPLE Q&A STRIP -->
+  <g>
+    <rect x="20" y="674" width="1200" height="86" rx="12" fill="url(#card)" stroke="#3b4a8f"/>
+    <text x="40" y="702" fill="#8ea2ff" font-size="14" font-weight="600">Grounded Q&amp;A example</text>
+    <text x="40" y="726" fill="#e8ecf8" font-size="13">Q: "How many casual leaves am I entitled to per year?"</text>
+    <text x="40" y="748" fill="#34d399" font-size="13">A: "You are entitled to 12 casual leaves per year. (Source: HR_Policy.txt, Section 4.2)"</text>
+  </g>
+</svg>
