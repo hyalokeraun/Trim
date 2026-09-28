@@ -1,0 +1,15 @@
+ACME CORPORATION — GRIEVANCE REDRESSAL POLICY (EXCERPT)
+Effective: January 2025 | Owner: People Operations
+(Fictional sample document for hackathon demo purposes.)
+
+Section 1.1 Scope
+Any employee may raise grievances about workplace issues, excluding performance ratings
+which follow the review appeal process.
+
+Section 2.1 How to Raise a Grievance
+Write to grievances@acme.example with facts and dates. The grievance officer acknowledges
+within 3 working days. Resolution target is 15 working days.
+
+Section 2.2 Escalation
+If unresolved in 15 working days, escalate to the HR head, then to the ethics committee.
+No retaliation is permitted against anyone raising a genuine grievance.

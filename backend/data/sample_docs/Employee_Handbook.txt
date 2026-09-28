@@ -1,0 +1,26 @@
+ACME CORPORATION — EMPLOYEE HANDBOOK (EXCERPTS)
+Effective: January 2025 | Owner: People Operations
+(Fictional sample document for hackathon demo purposes.)
+
+Section 1.1 Welcome and Values
+Our values are: customers first, ownership, transparency, and respect. This handbook is a
+guide, not an employment contract.
+
+Section 2.1 Onboarding
+New joiners complete onboarding within their first 2 weeks, including HR orientation, IT
+setup, and mandatory security training. A buddy is assigned for the first 30 days.
+
+Section 2.2 Working Hours
+Standard working hours are 9:30 AM to 6:30 PM, Monday to Friday. Flexible start between
+8:30 AM and 10:30 AM is allowed with manager approval.
+
+Section 3.1 Code of Conduct
+Treat colleagues with respect. Harassment of any kind is prohibited and may lead to
+termination. Conflicts of interest must be disclosed to HR in writing.
+
+Section 3.2 Dress Code
+Smart casuals on working days; business formals for client visits.
+
+Section 6.1 Performance Reviews
+Performance is reviewed twice a year (June and December). Ratings determine annual
+increments and bonuses.

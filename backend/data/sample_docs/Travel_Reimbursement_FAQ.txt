@@ -1,0 +1,22 @@
+ACME CORPORATION — TRAVEL & REIMBURSEMENT FAQ
+Last updated: February 2025 | Owner: Finance
+(Fictional sample document for hackathon demo purposes.)
+
+Section 1.1 What expenses can I claim?
+Employees can claim pre-approved business travel (flights, trains, hotels, local transport
+for client visits) and client entertainment up to Rs. 2,500 per occasion with manager approval.
+
+Section 1.2 Daily Allowance (Per Diem)
+Domestic travel per diem is Rs. 1,800 per day covering meals and incidentals. International
+per diem follows the country matrix published on the intranet.
+
+Section 2.1 How do I submit a claim?
+Submit claims in the expense portal within 15 days of travel with GST invoices. Claims above
+Rs. 10,000 need director approval. Reimbursement is processed within 10 working days of approval.
+
+Section 2.2 Flight and Hotel Limits
+Domestic flights: economy class only. International flights over 6 hours: premium economy
+with VP approval. Hotel caps: Rs. 6,000/night (Tier-1 cities), Rs. 4,000/night (other cities).
+
+Section 3.1 Non-reimbursable Items
+Alcohol, personal entertainment, traffic fines, and mini-bar charges are not reimbursable.

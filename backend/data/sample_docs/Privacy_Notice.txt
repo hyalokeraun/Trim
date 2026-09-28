@@ -1,0 +1,16 @@
+ACME CORPORATION — DATA PRIVACY NOTICE (EXCERPT)
+Effective: June 2025 | Owner: Legal & Compliance
+(Fictional sample document for hackathon demo purposes.)
+
+Section 1.1 What Data We Collect
+We collect employee contact details, payroll information, and system access logs for
+employment administration and security.
+
+Section 2.1 Purpose and Retention
+HR records are retained for 8 years after separation per statutory requirements. Access
+logs are retained for 1 year.
+
+Section 3.1 Employee Rights
+Employees may request a copy of their personal data by writing to privacy@acme.example.
+Requests are fulfilled within 30 days. No real user data is stored in demo systems — all
+hackathon datasets are synthetic or anonymized.

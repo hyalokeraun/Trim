@@ -1,0 +1,12 @@
+# secrets — never commit (contains LLM API keys)
+backend/.env
+
+# python
+backend/.venv/
+backend/__pycache__/
+backend/vector_store/
+*.pyc
+
+# frontend
+frontend/node_modules/
+frontend/dist/

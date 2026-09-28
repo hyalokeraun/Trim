@@ -1,0 +1,31 @@
+ACME CORPORATION — IT SECURITY POLICY
+Effective: March 2025 | Owner: Information Security | Version 2.4
+(Fictional sample document for hackathon demo purposes.)
+
+Section 1.1 Purpose
+This policy defines minimum security requirements for all employees, contractors, and
+systems handling company data.
+
+Section 2.1 Password Policy
+Passwords must be at least 12 characters long and include uppercase, lowercase, a number,
+and a special character. Passwords expire every 90 days. Reuse of the last 5 passwords is
+prohibited. Multi-factor authentication (MFA) is mandatory for email, VPN, and code
+repositories. Never share passwords over email or chat.
+
+Section 2.2 Device Security
+All laptops must have full-disk encryption enabled and auto-lock after 5 minutes of
+inactivity. USB storage devices from outside the company are blocked by default; request
+an exception from IT Security for approved drives.
+
+Section 3.1 VPN and Remote Access
+Employees working remotely must connect through the company VPN with MFA. Split tunneling
+is disabled. Public Wi-Fi may only be used with VPN active.
+
+Section 3.2 Data Handling
+Customer data is classified as Confidential. Do not upload Confidential data to personal
+cloud storage or public AI tools. Report suspected phishing within 1 hour to
+security@acme.example. Suspected data breaches must be reported within 24 hours.
+
+Section 4.1 Incident Reporting
+Contact the IT helpdesk for malware alerts. For lost or stolen devices, notify IT Security
+immediately so the device can be remotely wiped.

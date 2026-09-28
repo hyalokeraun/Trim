@@ -1,0 +1,26 @@
+ACME CORPORATION — REMOTE WORK POLICY
+Effective: April 2025 | Owner: People Operations | Version 1.8
+(Fictional sample document for hackathon demo purposes.)
+
+Section 1.1 Eligibility
+Employees who have completed 6 months and are rated "Meets Expectations" or above may
+request hybrid or remote work with manager approval. Customer-facing support roles require
+minimum 3 days in office per week.
+
+Section 2.1 Hybrid Schedule
+Hybrid employees work at least 2 days per week from the office. Teams fix common anchor
+days. Yes — employees may work from home on Fridays if Friday is not their team's anchor
+day and sprint commitments are met.
+
+Section 2.2 Remote Work Expectations
+Remote employees must be reachable on chat during working hours, keep calendars updated,
+and attend all video meetings with cameras on unless exempted. Work from a location with
+reliable internet (minimum 25 Mbps).
+
+Section 3.1 Equipment
+The company provides a laptop, headset, and a one-time home-office allowance of
+Rs. 15,000 against bills.
+
+Section 4.1 Security While Remote
+Remote work must follow the IT Security Policy: VPN with MFA is mandatory, and company
+data must stay on company-managed devices.

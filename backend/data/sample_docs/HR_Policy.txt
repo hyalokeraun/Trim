@@ -1,0 +1,36 @@
+ACME CORPORATION — HR LEAVE POLICY
+Effective: January 2025 | Owner: People Operations | Version 3.1
+(This is a fictional sample document created for hackathon demo purposes.)
+
+Section 1.1 Employment Types
+This policy applies to all full-time employees of Acme Corporation. Part-time employees
+accrue leave on a pro-rata basis. Contractors are not covered by this policy.
+
+Section 4.1 Annual Leave (Earned Leave)
+Full-time employees accrue 18 days of annual earned leave per calendar year. Leave accrues
+at 1.5 days per month. Up to 10 unused annual leave days may be carried forward to the
+next year. Carry-forward beyond 10 days lapses.
+
+Section 4.2 Casual Leave
+Employees get 12 casual leaves per year. Casual leave is intended for short, unplanned
+absences such as minor illness, family needs, or personal errands. A maximum of 3 casual
+leaves may be taken consecutively. Casual leave cannot be carried forward and lapses at
+the end of each calendar year. No prior approval is needed for 1 day, but inform your
+manager over email or chat before 10 AM.
+
+Section 4.3 Sick Leave
+Employees are entitled to 10 sick leaves per year. Sick leave beyond 2 consecutive days
+requires a medical certificate. Unused sick leave lapses yearly and cannot be encashed.
+
+Section 4.4 Maternity and Paternity Leave
+Maternity leave is 26 weeks paid, as per applicable law. Paternity leave is 15 days paid,
+to be availed within 6 months of the child's birth.
+
+Section 5.1 Leave Application Process
+Apply for planned leave at least 7 days in advance through the HR portal. Casual leave for
+one day can be applied retroactively within 2 working days. All leave must be approved by
+the reporting manager.
+
+Section 5.2 Leave Encashment
+Unused annual leave up to 10 days may be encashed at the time of separation at the basic
+daily rate. Casual and sick leave cannot be encashed.
