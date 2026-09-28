@@ -24,7 +24,8 @@ def ask(body: AskRequest):
             result_type="clarify",
         )
 
-    result = retriever.retrieve(q)
+    history = [h.model_dump() for h in (body.history or [])][-6:]
+    result = retriever.retrieve(q, history=history)
     if result["status"] == "not_found":
         return AskResponse(
             answer=NOT_FOUND_MESSAGE,
@@ -34,7 +35,7 @@ def ask(body: AskRequest):
         )
 
     try:
-        answer = generate_answer(q, result["chunks"])
+        answer = generate_answer(q, result["chunks"], history=history)
     except LLMError as e:
         raise HTTPException(status_code=503, detail=str(e))
 

@@ -10,11 +10,11 @@ async function parseError(res) {
   }
 }
 
-export async function askQuestion(question, useAgent = false) {
+export async function askQuestion(question, useAgent = false, history = []) {
   const res = await fetch(`${BASE}/api/${useAgent ? 'ask-agent' : 'ask'}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question }),
+    body: JSON.stringify({ question, history }),
   });
   if (!res.ok) throw new Error(await parseError(res));
   return res.json();

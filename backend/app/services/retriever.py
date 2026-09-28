@@ -26,10 +26,35 @@ def clarifying_question(query: str) -> str:
     )
 
 
+def _recent_user_questions(history, n: int = 3) -> str:
+    """Combine the last few user questions so follow-ups carry their topic."""
+    if not history:
+        return ""
+    qs = []
+    for turn in reversed(history[-8:]):
+        role = turn.get("role") if isinstance(turn, dict) else getattr(turn, "role", "")
+        text = turn.get("content") if isinstance(turn, dict) else getattr(turn, "content", "")
+        if role == "user" and (text or "").strip():
+            qs.append(text.strip())
+            if len(qs) >= n:
+                break
+    return " ".join(reversed(qs))
+
+
 def retrieve(question: str, top_k: int = TOP_K,
-             threshold: float = RELEVANCE_THRESHOLD) -> Dict[str, Any]:
-    """Run search + threshold filter. Returns dict with status + chunks."""
+             threshold: float = RELEVANCE_THRESHOLD, history=None) -> Dict[str, Any]:
+    """Run search + threshold filter. Returns dict with status + chunks.
+
+    Context-driven fallback: if a bare follow-up ("how many carry forward?",
+    "what about sick leave?") finds nothing on its own, retry once with the
+    previous user question prepended so pronouns/topics resolve.
+    """
     hits, max_score = store.search_filtered(question, top_k=top_k, threshold=threshold)
+    if not hits and history:
+        prev = _recent_user_questions(history)
+        if prev and question.strip().lower() not in prev.strip().lower():
+            hits, max_score = store.search_filtered(f"{prev} {question}",
+                                                    top_k=top_k, threshold=threshold)
     if not hits:
         return {
             "status": "not_found",

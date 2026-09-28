@@ -37,9 +37,14 @@ export default function ChatWindow({ useAgent, pushToast }) {
     }
     setInput('');
     setMessages((m) => [...m, { role: 'user', text: q }]);
+    // context-driven chat: send recent turns so follow-ups ("those?", "and sick leave?") resolve
+    const history = messages
+      .filter((m) => !m.loading && m.text)
+      .slice(-6)
+      .map((m) => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text.slice(0, 600) }));
     setBusy(true);
     try {
-      const data = await askQuestion(q, useAgent);
+      const data = await askQuestion(q, useAgent, history);
       setMessages((m) => [
         ...m,
         {

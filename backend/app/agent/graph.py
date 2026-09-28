@@ -17,6 +17,7 @@ except Exception:
 
 class AgentState(TypedDict, total=False):
     question: str
+    history: List[Dict[str, str]]
     hits: List[Dict[str, Any]]
     graded: List[Dict[str, Any]]
     answer: str
@@ -40,7 +41,7 @@ def generate_node(state: AgentState) -> AgentState:
     graded = state.get("graded", [])
     if not graded:
         return {"answer": NOT_FOUND_MESSAGE, "sources": [], "result_type": "not_found"}
-    answer = generate_answer(state["question"], graded)
+    answer = generate_answer(state["question"], graded, history=state.get("history"))
     sources = [
         {"document": h["source"], "section": h.get("section", "N/A"),
          "snippet": h["text"][:600], "score": round(h["score"], 3)}
@@ -73,10 +74,11 @@ if _HAS_LG:
     _graph = _g.compile()
 
 
-def run_agent(question: str) -> Dict[str, Any]:
+def run_agent(question: str, history=None) -> Dict[str, Any]:
     """Execute retrieve->grade->generate->cite. Returns {answer, sources, result_type, confidence}."""
+    history = list(history or [])
     if _graph is not None:
-        out = _graph.invoke({"question": question})
+        out = _graph.invoke({"question": question, "history": history})
         graded = out.get("graded", [])
         conf = round(max((h["score"] for h in graded), default=0.0), 3)
         return {
@@ -88,9 +90,9 @@ def run_agent(question: str) -> Dict[str, Any]:
     # fallback: plain pipeline without langgraph
     from app.services import retriever
     from app.services.llm import generate_answer as _gen
-    res = retriever.retrieve(question)
+    res = retriever.retrieve(question, history=history)
     if res["status"] == "not_found":
         return {"answer": NOT_FOUND_MESSAGE, "sources": [],
                 "result_type": "not_found", "confidence": res["confidence"]}
-    return {"answer": _gen(question, res["chunks"]), "sources": res["sources"],
+    return {"answer": _gen(question, res["chunks"], history=history), "sources": res["sources"],
             "result_type": "exact", "confidence": res["confidence"]}

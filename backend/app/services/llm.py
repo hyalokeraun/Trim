@@ -46,12 +46,28 @@ def _context_block(chunks) -> str:
     return "\n\n---\n\n".join(parts)
 
 
-def _prompt(question: str, chunks) -> str:
-    return (
+def _history_block(history) -> str:
+    if not history:
+        return ""
+    lines = []
+    for turn in (history or [])[-6:]:
+        role = (turn.get("role") if isinstance(turn, dict) else getattr(turn, "role", "user")) or "user"
+        text = (turn.get("content") if isinstance(turn, dict) else getattr(turn, "content", ""))
+        text = (text or "")[:400]
+        who = "User" if role == "user" else "Assistant"
+        lines.append(f"{who}: {text}")
+    return "\n".join(lines)
+
+
+def _prompt(question: str, chunks, history=None) -> str:
+    base = (
         f"{SYSTEM_PROMPT}\n\n"
         f"Context excerpts:\n{_context_block(chunks)}\n\n"
-        f"Question: {question}\nAnswer (with source citations):"
     )
+    hist = _history_block(history)
+    if hist:
+        base += f"Conversation so far (for reference resolution only):\n{hist}\n\n"
+    return base + f"Question: {question}\nAnswer (with source citations):"
 
 
 # ---------------- Ollama (local) ----------------
@@ -182,9 +198,9 @@ def check_groq() -> bool:
 
 # ---------------- dispatch ----------------
 
-def generate_answer(question: str, chunks) -> str:
+def generate_answer(question: str, chunks, history=None) -> str:
     provider = (LLM_PROVIDER or "ollama").lower()
-    prompt = _prompt(question, chunks)
+    prompt = _prompt(question, chunks, history)
     if provider == "gemini":
         return _generate_gemini(prompt)
     if provider == "groq":

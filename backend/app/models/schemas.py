@@ -3,8 +3,15 @@ from typing import List, Optional, Literal
 from pydantic import BaseModel, Field
 
 
+class HistoryMessage(BaseModel):
+    """One turn of prior conversation (oldest first). Used only to resolve follow-ups."""
+    role: Literal["user", "assistant"] = "user"
+    content: str = ""
+
+
 class AskRequest(BaseModel):
     question: str = Field(..., description="User question")
+    history: List[HistoryMessage] = Field(default_factory=list, description="Recent chat turns, oldest first")
 
 
 class Source(BaseModel):

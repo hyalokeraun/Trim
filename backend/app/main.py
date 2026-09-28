@@ -73,8 +73,9 @@ def ask_agent(body: AskRequest):
         return AskResponse(answer=retriever.clarifying_question(q),
                            sources=[], confidence=0.0, result_type="clarify")
     from app.agent.graph import run_agent
+    history = [h.model_dump() for h in (body.history or [])][-6:]
     try:
-        out = run_agent(q)
+        out = run_agent(q, history=history)
     except LLMError as e:
         raise HTTPException(status_code=503, detail=str(e))
     return AskResponse(answer=out["answer"], sources=[Source(**s) for s in out["sources"]],

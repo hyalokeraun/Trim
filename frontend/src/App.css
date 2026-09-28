@@ -15,7 +15,7 @@
 html, body, #root { height: 100%; }
 body {
   margin: 0;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
   background: radial-gradient(1200px 600px at 20% -10%, #1c2560 0%, transparent 60%),
     radial-gradient(1000px 500px at 110% 10%, #3b1d6e 0%, transparent 55%), var(--bg);
   color: var(--text);
@@ -32,6 +32,10 @@ body {
   padding: 12px 18px;
 }
 .brand { display: flex; gap: 12px; align-items: center; color: var(--accent); }
+.brand h1, .sidebar h2, .bubble, .starter, .send, .upload-btn {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  letter-spacing: 0.01em;
+}
 .brand h1 { font-size: 18px; margin: 0; color: var(--text); }
 .brand p { font-size: 12px; margin: 2px 0 0; color: var(--muted); }
 .agent-toggle {
